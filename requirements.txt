@@ -28,6 +28,5 @@ google-cloud-storage
 # memoized-property
 # termcolor
 streamlit
-io
 requests
 fsspec
