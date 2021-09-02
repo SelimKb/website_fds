@@ -1,10 +1,9 @@
 import pandas as pd
-import matplotlib.pyplot as plt
 import requests
 import streamlit as st
 import io
 
-from PIL import Image
+# from PIL import Image
 
 from website_fds.params import BUCKET_NAME, CLEAN_DATA_STORAGE_LOCATION
 
