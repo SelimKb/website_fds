@@ -48,7 +48,7 @@ with user_input:
     squads_list =[]
 
 
-    position = st.sidebar.selectbox('Choisis un poste:',
+    position = st.sidebar.selectbox('Choisis un poste :',
 
                                  trad_post.keys())
     position =trad_post[position]
@@ -65,7 +65,7 @@ with user_input:
     years_list.sort()
 
     year = st.sidebar.selectbox(
-        'Select your season:', years_list)  # We define the season variable
+        'Choisis une saison :', years_list)  # We define the season variable
 
     df_pos=df_pos[df_pos["season_year"]==year]
 
@@ -73,7 +73,7 @@ with user_input:
     leagues_list.sort()
 
 
-    league = st.sidebar.selectbox('Choisis ta ligue:',
+    league = st.sidebar.selectbox('Choisis une ligue :',
 
                                 trad_leagues.keys())  # We define the county variable
 
@@ -86,7 +86,7 @@ with user_input:
     squads_list.sort()
 
 
-    squad = st.sidebar.selectbox('Choisis ton équipe:',
+    squad = st.sidebar.selectbox('Choisis une équipe :',
                                 squads_list)  # We define the squad variable
 
     df_pos=df_pos[df_pos["squad"]==squad]
@@ -95,7 +95,7 @@ with user_input:
     players_list.sort()
 
 
-    player = st.sidebar.selectbox('Et enfin, ton joueur:',
+    player = st.sidebar.selectbox("Et enfin, le joueur dont le profil t'intéresse :",
                                 players_list)  # We define the player variable
     
 
