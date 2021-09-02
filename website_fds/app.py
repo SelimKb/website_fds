@@ -32,7 +32,7 @@ df_secours = pd.read_csv(
     f'gs://{BUCKET_NAME}/{CLEAN_DATA_STORAGE_LOCATION}players_base.csv')
 
 with user_input:
-    st.sidebar.header('Player selection')
+    st.sidebar.header('Choix du joueur')
 
     # Generating the list for states
     trad_post = {"Attaquant":"Forward","Défenseur":"Defender", "Milieu":"Midfield"}
@@ -48,7 +48,7 @@ with user_input:
     squads_list =[]
 
 
-    position = st.sidebar.selectbox('Select your position:',
+    position = st.sidebar.selectbox('Choisis un poste:',
 
                                  trad_post.keys())
     position =trad_post[position]
@@ -73,7 +73,7 @@ with user_input:
     leagues_list.sort()
 
 
-    league = st.sidebar.selectbox('Select your league:',
+    league = st.sidebar.selectbox('Choisis ta ligue:',
 
                                 trad_leagues.keys())  # We define the county variable
 
@@ -86,7 +86,7 @@ with user_input:
     squads_list.sort()
 
 
-    squad = st.sidebar.selectbox('Select your squad:',
+    squad = st.sidebar.selectbox('Choisis ton équipe:',
                                 squads_list)  # We define the squad variable
 
     df_pos=df_pos[df_pos["squad"]==squad]
@@ -95,13 +95,13 @@ with user_input:
     players_list.sort()
 
 
-    player = st.sidebar.selectbox('Select your player:',
+    player = st.sidebar.selectbox('Et enfin, ton joueur:',
                                 players_list)  # We define the player variable
     
 
 
     # Summary Table
-if st.sidebar.button('Results'):
+if st.sidebar.button("Who's the MPG king now?"):
     with output_graphs:
         # print is visible in the server output, not in the page
         st.title("Profil recherché :")
