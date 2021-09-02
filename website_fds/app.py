@@ -101,33 +101,6 @@ with user_input:
     
 
 
-
-with input_summary:
-
-
-    # table_days = st.sidebar.slider(
-    #     'Select the number of days you want to be display in the Summary Table. ',
-    #     min_value=3,
-    #     max_value=15,
-    #     value=5,
-    #     step=1)
-
-    # # Creating the dataframe for the county
-    # df_county = df[(df.county == county) & (df.state == state)].copy()
-
-        col_list = st.columns(5)
-        i = 0
-        for col in col_list:
-            player_found = df[df['player_name']==output_df['player_name'][i]].loc[df['season_year']=='2020-21',:]
-            col.header(output_df['player_name'][i])
-            # col.image(a compléter)
-            # col.text(f'Ligue :{player_found['squad'].tolist()[0])
-
-
-            i+=1
-
-
-
     # Summary Table
 if st.sidebar.button('Results'):
     with output_graphs:
@@ -137,17 +110,17 @@ if st.sidebar.button('Results'):
         df_player = df_player[df_player["season_year"]==year]
         image_player=df_player["photo"].tolist()
         image_flag=df_player["flag"].tolist()
-        # req = requests.get(image_player[0])
-        # image_player = io.BytesIO(req.content)
-        # req = requests.get(image_flag[0])
-        # image_flag = io.BytesIO(req.content)
+        req = requests.get(image_player[0])
+        image_player = io.BytesIO(req.content)
+        req = requests.get(image_flag[0])
+        image_flag = io.BytesIO(req.content)
         age=df_player["age"].tolist()[0]
         MP=df_player["MP"].tolist()[0]
         goals = int(df_player["goals"].tolist()[0])
 
         col1, col2, col3 = st.columns((1,2,2))
 
-        # col1.image(image_player,use_column_width=True)
+        col1.image(image_player,use_column_width=True)
         col2.header(player)
         col2.markdown(f"<h4 style='text-align: left; color: white;font-size:15px'>En {year} :</h4>", unsafe_allow_html=True)
         col2.text('')
@@ -158,7 +131,7 @@ if st.sidebar.button('Results'):
             col2.text(f'Valeur : {int(df_player["value"].to_list()[0])}')
 
         col3.text('')
-        # c3.image(image_flag,width=40)
+        col3.image(image_flag,width=40)
         col3.text(f'Matchs joués cette saison : {int(df_player["MP"].to_list()[0])}')
         col3.text(f'Buts : {int(df_player["goals"].to_list()[0])}')
         col3.text(f'Passes décisives : {int(df_player["assists"].to_list()[0])}')
@@ -174,34 +147,31 @@ if st.sidebar.button('Results'):
                 output_df.loc[id, key] = joueur
 
 
-        # col_list = st.columns((1, 2, 2))
-
-
-        # image_list=[]
-        # flag_list=[]
-        # for i in output_df["player_name"]:
-        #     if i in df["player_name"].tolist():
-        #         df_player=df[df["player_name"]==i].copy()
-        #         df_player = df_player[df_player["season_year"]=="2020-21"]
-        #         img_p=df_player["photo"].tolist()
-        #         img_f=df_player["flag"].tolist()
-        #         req_p = requests.get(img_p[0])
-        #         req_f = requests.get(img_f[0])
-        #     else:
-        #         req_p = requests.get(
-        #             "https://cdn.sofifa.com/players/233/121/20_60.png")
-        #         req_f = requests.get(
-        #             "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Olympic_flag.svg/1920px-Olympic_flag.svg.png"
-        #         )
-        #     image_list.append(io.BytesIO(req_p.content))
-        #     flag_list.append(io.BytesIO(req_f.content))
+        image_list=[]
+        flag_list=[]
+        for i in output_df["player_name"]:
+            if i in df["player_name"].tolist():
+                df_player=df[df["player_name"]==i].copy()
+                df_player = df_player[df_player["season_year"]=="2020-21"]
+                img_p=df_player["photo"].tolist()
+                img_f=df_player["flag"].tolist()
+                req_p = requests.get(img_p[0])
+                req_f = requests.get(img_f[0])
+            else:
+                req_p = requests.get(
+                    "https://cdn.sofifa.com/players/233/121/20_60.png")
+                req_f = requests.get(
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Olympic_flag.svg/1920px-Olympic_flag.svg.png"
+                )
+            image_list.append(io.BytesIO(req_p.content))
+            flag_list.append(io.BytesIO(req_f.content))
 
         list_contain=[]
         for i in range(5):
             list_contain.append(st.container())
             with list_contain[i]:
                 c1,c2,c3 = st.columns((1, 2, 2))
-                # c1.image(image_list[i],use_column_width=True)
+                c1.image(image_list[i],use_column_width=True)
                 c2.header(output_df["player_name"][i])
                 c2.markdown(f"<h4 style='text-align: left; color: white;font-size:15px'>En 2020-21 :</h4>", unsafe_allow_html=True)
                 c2.text('')
@@ -214,7 +184,7 @@ if st.sidebar.button('Results'):
                     c2.text(f'Equipe : {player_found["squad"].tolist()[0]}')
 
                     c3.text('')
-                    # c3.image(image_flag,width=40)
+                    c3.image(flag_list[i],width=40)
                     c3.text(
                         f'Matchs joués cette saison : {int(player_found["MP"].to_list()[0])}'
                     )
@@ -233,7 +203,7 @@ if st.sidebar.button('Results'):
                     c2.text(f'Equipe : {player_found["squad"].tolist()[0]}')
 
                     c3.text('')
-                    # c3.image(image_flag,width=40)
+                    c3.image(image_flag,width=40)
                     c3.text(
                         f'Matchs joués cette saison : {int(player_found["MP"].to_list()[0])}'
                     )
@@ -249,13 +219,7 @@ if st.sidebar.button('Results'):
 
 
 
-            # c1.image(image_list[i], use_column_width=True)
-            # c2.markdown(f"<h4 style='text-align: center; color: white;font-size:18px'>{output_df['''player_name'''][i]}</h4>", unsafe_allow_html=True)
-            # col.image(flag_list[i], width=40)
-            # col.markdown(f"<h4 style='text-align: center; color: white;font-size:10px'>En 2020-21 :</h4>", unsafe_allow_html=True)
-
-
-
+            
 
     # col5.image(image_list[1], use_column_width=True)
     # col6.image(image_list[2], use_column_width=True)
