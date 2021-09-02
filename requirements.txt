@@ -17,8 +17,8 @@ scikit-learn
 # yapf
 
 # # API
-# gcsfs
-# google-cloud-storage
+gcsfs
+google-cloud-storage
 # mlflow
 # s3fs
 
@@ -28,3 +28,6 @@ scikit-learn
 # memoized-property
 # termcolor
 streamlit
+io
+requests
+fsspec
