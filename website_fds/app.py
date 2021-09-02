@@ -8,6 +8,7 @@ from PIL import Image
 
 from website_fds.params import BUCKET_NAME, CLEAN_DATA_STORAGE_LOCATION
 
+
 url = 'https://footballscouting-qpmhphei7q-ew.a.run.app/get_close_players'
 
 header = st.container()
@@ -21,11 +22,13 @@ with header:
     st.markdown("""
     #### Par: [Selim Kebaier](https://www.linkedin.com/in/selim-kebaier-7b009073/), [Jean-Rémi Dessirier](https://www.linkedin.com/in/jean-r%C3%A9mi-dessirier-832a98a9/), [Morgan Godard](https://www.linkedin.com/in/morgan-godard-97aa1a194/) et [Bilel Zaaraoui](https://www.linkedin.com/in/bilel-zaaraoui-8513bb72/)
 
+
     Cette application web présente les 5 joueurs les plus proches, en terme de statistiques de jeu réels, d'un joueur sélectionné par l'utilisateur.
 
     """)
 
 df = pd.read_csv(f'gs://{BUCKET_NAME}/{CLEAN_DATA_STORAGE_LOCATION}players_streamlit.csv')
+
 df_secours = pd.read_csv(
     f'gs://{BUCKET_NAME}/{CLEAN_DATA_STORAGE_LOCATION}players_base.csv')
 
@@ -47,8 +50,10 @@ with user_input:
 
 
     position = st.sidebar.selectbox('Select your position:',
+
                                  trad_post.keys())
     position =trad_post[position]
+
 
     if position.lower() == "defender":
         df_pos=df[df['is_df']==1].copy()
@@ -61,7 +66,7 @@ with user_input:
     years_list.sort()
 
     year = st.sidebar.selectbox(
-        'Select your season:', years_list)  # We define the county variable
+        'Select your season:', years_list)  # We define the season variable
 
     df_pos=df_pos[df_pos["season_year"]==year]
 
@@ -70,7 +75,9 @@ with user_input:
 
 
     league = st.sidebar.selectbox('Select your league:',
+
                                 trad_leagues.keys())  # We define the county variable
+
 
     league=trad_leagues[league]
 
@@ -81,7 +88,7 @@ with user_input:
 
 
     squad = st.sidebar.selectbox('Select your squad:',
-                                squads_list)  # We define the county variable
+                                squads_list)  # We define the squad variable
 
     df_pos=df_pos[df_pos["squad"]==squad]
 
@@ -90,7 +97,13 @@ with user_input:
 
 
     player = st.sidebar.selectbox('Select your player:',
-                                players_list)  # We define the county variable
+                                players_list)  # We define the player variable
+    
+
+
+
+with input_summary:
+
 
     # table_days = st.sidebar.slider(
     #     'Select the number of days you want to be display in the Summary Table. ',
@@ -102,14 +115,16 @@ with user_input:
     # # Creating the dataframe for the county
     # df_county = df[(df.county == county) & (df.state == state)].copy()
 
-    # #Create a new column with new cases
-    # df_county['new_cases'] = df_county.loc[:, 'cases'].diff()
+        col_list = st.columns(5)
+        i = 0
+        for col in col_list:
+            player_found = df[df['player_name']==output_df['player_name'][i]].loc[df['season_year']=='2020-21',:]
+            col.header(output_df['player_name'][i])
+            # col.image(a compléter)
+            # col.text(f'Ligue :{player_found['squad'].tolist()[0])
 
-    # #Create a new column for 7-day moving average
-    # df_county['moving_average'] = df_county.loc[:, 'new_cases'].rolling(
-    #     window=moving_average_day).mean()
 
-    # #Create a
+            i+=1
 
 
 
