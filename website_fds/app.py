@@ -1,16 +1,15 @@
 import pandas as pd
-import matplotlib.pyplot as plt
 import io
 import requests
-import openpyxl
 import streamlit as st
 
 from website_fds.params import BUCKET_NAME, CLEAN_DATA_STORAGE_LOCATION
 
-header = st.beta_container()
-user_input = st.beta_container()
-output_graphs = st.beta_container()
-author_credits = st.beta_container()
+header = st.container()
+user_input = st.container()
+input_summary = st.container()
+output_graphs = st.container()
+author_credits = st.container()
 
 with header:
     st.title("Welcome to the football data scouting project")
@@ -18,7 +17,6 @@ with header:
     #### By: [Marco Cerrato](https://www.linkedin.com/in/marcocerratofontecha/)
 
     Welcome to the football data scouting project. This web application displays current information on the total number of Covid-19 cases reported in your selected county. With this application, you can get concise information on the number of total cases, deaths, and daily cases.
-    **Note:** If you don't see the "User Selection" sidebar, please press the `>` icon on the top left side of your screen.
 
     """)
 
@@ -30,7 +28,7 @@ with header:
 #                  index_col='date')
 
 df = pd.read_csv(f'gs://{BUCKET_NAME}/{CLEAN_DATA_STORAGE_LOCATION}players_streamlit.csv')
-
+url = 'https://footballscouting-qpmhphei7q-ew.a.run.app/get_close_players'
 
 
 with user_input:
@@ -45,7 +43,7 @@ with user_input:
     position_list.sort()
 
     position = st.sidebar.selectbox('Select your position:',
-                                 position_list)  # We define the state variable
+                                 position_list)  # We define the position variable
 
     if position.lower() == "defender":
         df_pos=df[df['is_df']==1].copy()
@@ -58,7 +56,7 @@ with user_input:
     years_list.sort()
 
     year = st.sidebar.selectbox(
-        'Select your season:', years_list)  # We define the county variable
+        'Select your season:', years_list)  # We define the season variable
 
     df_pos=df_pos[df_pos["season_year"]==year]
 
@@ -67,7 +65,7 @@ with user_input:
 
 
     league = st.sidebar.selectbox('Select your league:',
-                                leagues_list)  # We define the county variable
+                                leagues_list)  # We define the league variable
 
 
     df_pos=df_pos[df_pos["new_league_name"]==league]
@@ -77,7 +75,7 @@ with user_input:
 
 
     squad = st.sidebar.selectbox('Select your squad:',
-                                squads_list)  # We define the county variable
+                                squads_list)  # We define the squad variable
 
     df_pos=df_pos[df_pos["squad"]==squad]
 
@@ -86,37 +84,55 @@ with user_input:
 
 
     player = st.sidebar.selectbox('Select your player:',
-                                players_list)  # We define the county variable
+                                players_list)  # We define the player variable
+    
 
 
 
-    # table_days = st.sidebar.slider(
-    #     'Select the number of days you want to be display in the Summary Table. ',
-    #     min_value=3,
-    #     max_value=15,
-    #     value=5,
-    #     step=1)
+with input_summary:
 
-    # moving_average_day = st.sidebar.slider(
-    #     'How many days to consider for the moving average? ',
-    #     min_value=5,
-    #     max_value=14,
-    #     value=7,
-    #     step=1)
+    params = {'position':position,'player_name':player,'season_year':year}
+    response = requests.get(url, params).json()
+    
+    player_selected = df[df['player_name']==player].loc[df['season_year']==year,:]
 
-    # # Creating the dataframe for the county
-    # df_county = df[(df.county == county) & (df.state == state)].copy()
+    col1, col2, col3 = st.columns((1,2,2))
+    # photo_req = requests.get(player_selected['photo'].to_list()[0])
+    # photo_player = io.BytesIO(photo_req.content)
+    # flag_req = requests.get(player_selected['flag'].to_list()[0])
+    # flag_player = io.BytesIO(flag_req.content)
+    # col1.image(photo_player,use_column_width=True)
+    col2.header(player)
+    col2.text(year)
+    col2.text(f'Age : {int(player_selected["age"].to_list()[0])}')
+    col2.text(f'Valeur : {int(player_selected["value"].to_list()[0])}')
+    col3.text('')
+    # c3.image(flag_player,width=40)
+    col3.text(f'Matchs joués cette saison : {int(player_selected["MP"].to_list()[0])}')
+    col3.text(f'Buts : {int(player_selected["goals"].to_list()[0])}')
+    col3.text(f'Passes décisives : {int(player_selected["assists"].to_list()[0])}')
 
-    # #Create a new column with new cases
-    # df_county['new_cases'] = df_county.loc[:, 'cases'].diff()
+    output_df = pd.DataFrame()
 
-    # #Create a new column for 7-day moving average
-    # df_county['moving_average'] = df_county.loc[:, 'new_cases'].rolling(
-    #     window=moving_average_day).mean()
+    with output_graphs:
+        st.title('Joueurs suggérés:')
+        for key, value in response.items():
+            for id,player in value.items():
+                output_df.loc[id,key] = player
 
-    # #Create a
+        st.table(output_df)
 
-# with output_graphs:
+        col_list = st.columns(5)
+        i = 0
+        for col in col_list:
+            player_found = df[df['player_name']==output_df['player_name'][i]].loc[df['season_year']=='2020-21',:]
+            col.header(output_df['player_name'][i])
+            # col.image(a compléter)
+            # col.text(f'Ligue :{player_found['squad'].tolist()[0])
+
+
+            i+=1
+
 
 #     # Summary Table
 
