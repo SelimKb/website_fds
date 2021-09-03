@@ -131,7 +131,7 @@ if st.sidebar.button("Who's the MPG king now?"):
 
         col3.text('')
         col3.image(image_flag,width=40)
-        col3.text(f'Matchs joués cette saison : {int(df_player["MP"].to_list()[0])}')
+        col3.text(f'Matchs joués : {int(df_player["MP"].to_list()[0])}')
         col3.text(f'Buts : {int(df_player["goals"].to_list()[0])}')
         col3.text(f'Passes décisives : {int(df_player["assists"].to_list()[0])}')
 
@@ -187,7 +187,7 @@ if st.sidebar.button("Who's the MPG king now?"):
                     c3.text('')
                     c3.image(flag_list[i],width=40)
                     c3.text(
-                        f'Matchs joués cette saison : {int(player_found["MP"].to_list()[0])}'
+                        f'Matchs joués : {int(player_found["MP"].to_list()[0])}'
                     )
                     c3.text(f'Buts : {int(player_found["goals"].to_list()[0])}')
                     c3.text(
@@ -206,7 +206,7 @@ if st.sidebar.button("Who's the MPG king now?"):
                     c3.text('')
                     c3.image(flag_list[i],width=40)
                     c3.text(
-                        f'Matchs joués cette saison : {int(player_found["MP"].to_list()[0])}'
+                        f'Matchs joués : {int(player_found["MP"].to_list()[0])}'
                     )
                     c3.text(
                         f'Buts : {int(player_found["goals"].to_list()[0])}')
