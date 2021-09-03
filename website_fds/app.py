@@ -14,6 +14,7 @@ header = st.container()
 user_input = st.container()
 output_graphs = st.container()
 other_players = st.container()
+author_credits = st.container()
 
 
 with header:
@@ -268,11 +269,11 @@ if st.sidebar.button("Who's the MPG king now?"):
 #         """**Note:** You can zoom on this graph if you are in front of a Desktop or Laptop by using your scrolling wheel on your mouse. You can also point on the line to get more information."""
 #     )
 
-# with author_credits:
-#     st.header(f'Credits')
-#     st.markdown("""
-#     **Thank you for using my application!**
+with author_credits:
+    st.header(f'Credits')
+    st.markdown("""
+    **Thank you for using our application!**
 
-#     The dataset used to feed this application is provided by [New York Times Covid-19 Github Repository](https://github.com/nytimes/covid-19-data).
-#     This application uses the Streamlit package library. You can learn more about me and my other projects by visiting my website [Not A Programmer] (https://notaprogrammer.com) or [my Github Repo] (https://github.com/cerratom).
-#     """)
+    The datasets used to feed this application are provided by [FBref](https://fbref.com/en/) and [sofifa](https://sofifa.com/).\n
+    This application uses the Streamlit package library.
+    """)
