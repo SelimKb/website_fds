@@ -127,7 +127,7 @@ if st.sidebar.button("Who's the MPG king now?"):
         if df_player["value"].tolist()[0]==-1:
             col2.text(f'Valeur : Non disponible')
         else:
-            col2.text(f'Valeur : {int(df_player["value"].to_list()[0])}')
+            col2.text(f'Valeur : {df_player["value"].to_list()[0]/1000_000} M€')
 
         col3.text('')
         col3.image(image_flag,width=40)
@@ -149,19 +149,21 @@ if st.sidebar.button("Who's the MPG king now?"):
         image_list=[]
         flag_list=[]
         for i in output_df["player_name"]:
-            if i in df["player_name"].tolist():
-                df_player=df[df["player_name"]==i].copy()
-                df_player = df_player[df_player["season_year"]=="2020-21"]
+            # if i in df[df["season_year"]=="2020-21"]["player_name"].tolist():
+            df_player=df[df["player_name"]==i].copy()
+            df_player = df_player[df_player["season_year"]=="2020-21"]
+            if df_player['photo'].tolist()==[]:
+                req_p = requests.get(
+                    "https://cdn.sofifa.com/players/notfound_0_60.png")
+                req_f = requests.get(
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Olympic_flag.svg/1920px-Olympic_flag.svg.png"
+                )
+            else:
                 img_p=df_player["photo"].tolist()
                 img_f=df_player["flag"].tolist()
                 req_p = requests.get(img_p[0])
                 req_f = requests.get(img_f[0])
-            else:
-                req_p = requests.get(
-                    "https://cdn.sofifa.com/players/233/121/20_60.png")
-                req_f = requests.get(
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Olympic_flag.svg/1920px-Olympic_flag.svg.png"
-                )
+                
             image_list.append(io.BytesIO(req_p.content))
             flag_list.append(io.BytesIO(req_f.content))
 
@@ -192,7 +194,7 @@ if st.sidebar.button("Who's the MPG king now?"):
                         f'Passes décisives : {int(player_found["assists"].to_list()[0])}'
                     )
                     c3.text(
-                        f'Valeur : {int(player_found["value"].to_list()[0])}')
+                        f'Valeur : {player_found["value"].to_list()[0]/1000_000} M€')
 
                 else:
                     player_found = df_secours[df_secours['player_name'] ==
@@ -202,7 +204,7 @@ if st.sidebar.button("Who's the MPG king now?"):
                     c2.text(f'Equipe : {player_found["squad"].tolist()[0]}')
 
                     c3.text('')
-                    c3.image(image_flag,width=40)
+                    c3.image(flag_list[i],width=40)
                     c3.text(
                         f'Matchs joués cette saison : {int(player_found["MP"].to_list()[0])}'
                     )
