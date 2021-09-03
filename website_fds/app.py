@@ -122,7 +122,7 @@ if st.sidebar.button("Who's the MPG king now?"):
 
         col1.image(image_player,use_column_width=True)
         col2.header(player)
-        col2.markdown(f"<h4 style='text-align: left; color: white;font-size:15px'>En {year} :</h4>", unsafe_allow_html=True)
+        col2.markdown(f"<h4 style='text-align: left; color: black;font-size:15px'>En {year} :</h4>", unsafe_allow_html=True)
         col2.text('')
         col2.text(f'Age : {int(df_player["age"].to_list()[0])}')
         if df_player["value"].tolist()[0]==-1:
@@ -175,7 +175,7 @@ if st.sidebar.button("Who's the MPG king now?"):
                 c1,c2,c3 = st.columns((1, 2, 2))
                 c1.image(image_list[i],use_column_width=True)
                 c2.header(output_df["player_name"][i])
-                c2.markdown(f"<h4 style='text-align: left; color: white;font-size:15px'>En 2020-21 :</h4>", unsafe_allow_html=True)
+                c2.markdown(f"<h4 style='text-align: left; color: black;font-size:15px'>En 2020-21 :</h4>", unsafe_allow_html=True)
                 c2.text('')
 
                 if output_df['player_name'][i] in df.loc[
